@@ -68,7 +68,7 @@ function head() {
   const s = D.site; document.title = s.name; look(); mode();
   $('ban').hidden = !(s.bo === '1' && s.bn); $('ban').textContent = s.bn;
   $('logo').textContent = String(s.name || 'Kit Room').toUpperCase();
-  { const d = D.delivery || { free_state: 'Kaduna' }, nm = d.free_state === 'FCT Abuja' ? d.free_state : d.free_state + ' State'; $('dnote').textContent = `Free delivery in ${nm}. Every other state and country has a delivery fee attached, which we confirm with you before dispatch.`; $('czmsg').textContent = `Your cart has customized items. We’ll agree the details and delivery with you in chat before you pay. Delivery is free in ${nm}.`; }
+  { const d = D.delivery || { free_state: 'Kaduna' }, nm = d.free_state === 'FCT Abuja' ? d.free_state : d.free_state + ' State'; $('dnote').textContent = `Free delivery in ${nm}. For every other state and country, the delivery fee is not included in this payment: once your payment is successful we contact you to arrange delivery and its fee.`; $('czmsg').textContent = `Your cart has customized items. We’ll agree the printing details with you in chat before you pay. Delivery is free in ${nm}.`; }
   $('hh').textContent = s.h; $('ht').textContent = s.t; $('hb').textContent = s.b;
   $('abt').innerHTML = String(s.about || '').split(/\n+/).filter(Boolean).map(p => `<p>${E(p)}</p>`).join('');
   $('abtLoc').textContent = $('cLoc').textContent = s.location || '';
@@ -78,7 +78,7 @@ function head() {
   { const d = D.delivery || { free_state: 'Kaduna' }, nm = d.free_state === 'FCT Abuja' ? d.free_state : d.free_state + ' State', f = +s.cfee || 0;
     $('pfee').textContent = f ? `Printing from ${money(f)} per item.` : 'Ask us for the printing price.';
     const I = { truck: '<path d="M2 6h12v10H2zM14 9h4l3 3v4h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6" cy="17.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="17.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/>', globe: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/>', card: '<rect x="3" y="5" width="18" height="14" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="1.8"/>', chat: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>' };
-    $('trust').innerHTML = [['truck', `Free delivery in ${nm}`, 'Every other state on request'], ['globe', 'We deliver worldwide', 'Fee confirmed before dispatch'], ['card', 'Pay securely', 'Card, transfer or USSD by Paystack'], ['chat', 'Real people on WhatsApp', 'Ask about any item or size']].map(([i, t, d]) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${I[i]}</svg><span><b>${t}</b>${d}</span></li>`).join(''); }
+    $('trust').innerHTML = [['truck', `Free delivery in ${nm}`, 'Other states arranged after payment'], ['globe', 'We deliver worldwide', 'Delivery fee paid separately'], ['card', 'Pay securely', 'Card, transfer or USSD by Paystack'], ['chat', 'Real people on WhatsApp', 'Ask about any item or size']].map(([i, t, d]) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${I[i]}</svg><span><b>${t}</b>${d}</span></li>`).join(''); }
   $('soc').innerHTML = ['x', 'ig', 'tt'].filter(k => s[k]).map(k => `<a href="${E(s[k])}" target="_blank" rel="noopener" aria-label="${LABEL[k]}">${ICONS[k]}</a>`).join('');
 }
 const smooth = () => matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth';
@@ -177,7 +177,7 @@ function cartUI() {
   $('chk').hidden = gate;
   $('order').textContent = !cz || zs === 'approved' ? 'Place order' : zs === 'pending' ? 'Waiting for approval' : zs === 'declined' ? 'Send a new request' : 'Send customization request';
   const dl = delivery($('ccountry').value, $('cstate').value);
-  $('sub').textContent = money(t); $('dlv').textContent = gate ? 'After approval' : dl === null ? 'Select your state' : dl === 0 ? 'Free' : dl === 'tbc' ? 'Fee applies (confirmed by us)' : money(dl); $('total').textContent = money(t + (gate || typeof dl !== 'number' ? 0 : dl));
+  $('sub').textContent = money(t); $('dlv').textContent = gate ? 'After approval' : dl === null ? 'Select your state' : dl === 0 ? 'Free' : 'Not included, arranged after payment'; $('total').textContent = money(t);
   $('cartN').textContent = n; $('order').disabled = !cart.length || (cz && zs === 'pending'); save();
 }
 const drawer = o => { $('cd').classList.toggle('open', o); $('sc').classList.toggle('open', o); };
@@ -196,7 +196,7 @@ async function payNow(ref, btn) {
 }
 function payBanner() {
   const q = new URLSearchParams(location.search || ''), st = q.get('pay'), ref = q.get('ref') || ''; if (!st) return;
-  const msg = { success: `Payment received for order ${ref}. Thank you! We will message you on WhatsApp about delivery.`, review: `We received a payment for order ${ref} but need to check the amount. We will contact you shortly.`, pending: 'We could not confirm your payment yet. If you were charged, your order will update shortly. Message us on WhatsApp if it does not.', failed: 'Your payment was not completed.' }[st];
+  const msg = { success: `Payment received for order ${ref}. Thank you! If you are outside our free delivery state, we will contact you shortly to arrange delivery and its fee.`, review: `We received a payment for order ${ref} but need to check the amount. We will contact you shortly.`, pending: 'We could not confirm your payment yet. If you were charged, your order will update shortly. Message us on WhatsApp if it does not.', failed: 'Your payment was not completed.' }[st];
   if (!msg) return;
   const retry = (st === 'failed' || st === 'pending') && ref; $('payb').hidden = false;
   $('payb').innerHTML = E(msg) + (retry ? ' <button class="lk2" id="payAgain">Try paying again</button>' : '');
@@ -259,8 +259,7 @@ $('order').onclick = async () => {
   if (!ng && !address) return toast('Enter your full delivery address');
   const where = ng ? (state === 'FCT Abuja' ? state : state + ' State') : state + ', ' + country;
   if (!home) {
-    const fee = delivery(country, state);
-    const go = await confirmBox('Delivery fee applies', `Delivery to ${where} has a delivery fee attached${typeof fee === 'number' && fee > 0 ? ' (' + money(fee) + ')' : '. We will confirm the amount with you'}. Would you like to proceed or cancel?`, `Please make sure ${phone} is a valid call or WhatsApp number. After you proceed, send us a message on WhatsApp or wait for delivery instructions on WhatsApp or by call.`);
+    const go = await confirmBox('Delivery fee is not included', `You pay ${money(cart.reduce((s, l) => s + unit(l) * l.q, 0))} for your items now. The delivery fee to ${where} is not included in this payment. Once your payment is successful, we will contact you to arrange delivery and its fee. Would you like to proceed?`, `We will call or WhatsApp you on ${phone}, so please make sure it is a valid number.`);
     if (!go) return;
   }
   const b = $('order'); b.disabled = true; b.textContent = 'Saving…';
@@ -269,12 +268,11 @@ $('order').onclick = async () => {
     const r = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, phone, email, country, state, address, landmark, carpark, items: cart.map(l => ({ id: l.id, size: l.z, qty: l.q, cz: !!l.cz })), customization: hasCz() && czReq ? { ref: czReq.ref, token: czReq.token } : undefined }) });
     const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Could not place the order');
     $('doneRef').textContent = j.ref;
-    $('doneMsg').textContent = home ? 'Tap below to confirm it with us on WhatsApp.' : `A delivery fee applies to ${where}${j.tbc ? ' and we will confirm the amount' : ' (' + money(j.delivery) + ')'}. Send us a message on WhatsApp now, or wait for delivery instructions on WhatsApp or by call on ${phone}.`;
+    $('doneMsg').textContent = home ? `Your total is ${money(j.total)} and delivery in ${where} is free.` : `Your total is ${money(j.total)} for the items. The delivery fee to ${where} is not included: once your payment is successful, we will contact you on ${phone} to arrange delivery and its fee.`;
     $('doneWa').textContent = home ? 'Confirm on WhatsApp' : 'Send message on WhatsApp';
     $('donePay').hidden = !j.payable; $('donePay').disabled = false; $('donePay').textContent = 'Pay now with Paystack'; $('donePay').onclick = () => payNow(j.ref);
-    if (j.payable) $('doneMsg').textContent += ' You can pay now by card, bank transfer or USSD, or confirm on WhatsApp and pay later.';
-    else if (j.tbc) $('doneMsg').textContent += ' Once we confirm your delivery fee we will send you a payment link.';
-    $('doneWa').href = wa(`Hello, I’m ${name}. I just placed order ${j.ref} on your website:\n${lines.join('\n')}\nDelivery to ${ng ? state : state + ', ' + country}: ${j.tbc ? 'delivery fee to be confirmed' : j.delivery ? money(j.delivery) : 'Free'}\nAddress: ${address}${landmark ? ' (near ' + landmark + ')' : ''}${carpark ? '\nNearest car park: ' + carpark : ''}\nTotal: ${money(j.total)}${j.tbc ? ' (excluding delivery fee)' : ''}\nPlease confirm it’s available.`);
+    $('doneMsg').textContent += j.payable ? ' Pay now by card, bank transfer or USSD.' : ' We will message you on WhatsApp with how to pay.';
+    $('doneWa').href = wa(`Hello, I’m ${name}. I just placed order ${j.ref} on your website:\n${lines.join('\n')}\nDelivery to ${ng ? state : state + ', ' + country}: ${j.excluded ? 'not included, to be arranged after payment' : 'Free'}\nAddress: ${address}${landmark ? ' (near ' + landmark + ')' : ''}${carpark ? '\nNearest car park: ' + carpark : ''}\nTotal for items: ${money(j.total)}${j.excluded ? ' (delivery fee not included)' : ''}\nPlease confirm it’s available.`);
     if (hasCz()) { czReq = null; saveReq(); }
     cart = []; cartUI(); $('cartview').hidden = true; $('done').hidden = false;
   } catch (e) { toast(e.message); }
