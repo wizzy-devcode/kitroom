@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Kit Room Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head><body>
+<div id="root"><p style="padding:24px;font-family:system-ui,sans-serif">Loading the admin…</p><noscript><p style="padding:24px;font-family:system-ui,sans-serif">Please turn on JavaScript to use the admin.</p></noscript></div>
+<script>if (location.protocol === 'file:') document.getElementById('root').innerHTML = '<div style="padding:24px;font-family:system-ui,sans-serif;max-width:520px"><h2>Open this from the running site</h2><p>The admin can’t run from a file on your computer. Start the server with <b>npm start</b> and open <b>http://localhost:3000/admin</b>, or open <b>/admin</b> on your Railway domain.</p></div>';</script>
+<script src="/admin.js" onerror="document.getElementById('root').innerHTML='<div style=&quot;padding:24px;font-family:system-ui,sans-serif&quot;><h2>Admin script didn’t load</h2><p>Refresh the page. If it keeps happening, check that the service is running and that public/admin.js was deployed.</p></div>'"></script>
+</body></html>

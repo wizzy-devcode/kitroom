@@ -1,0 +1,257 @@
+/* Alternative store designs. Same page, same features; only the look changes.
+   Matchday (default) lives in store.css. Choose in Admin > Site text > Store design,
+   or preview with /?look=gallery or /?look=terrace */
+
+/* =====================================================================
+   GALLERY: quiet and premium, like Apple or SSENSE.
+   White space, centred stage, huge product, black pill buttons.
+   ===================================================================== */
+html[data-look=gallery]{--paper:#FFFFFF;--card:#FFFFFF;--tile:#F4F4F2;--ink:#161617;--mu:#6B6B70;--line:#E6E6E3;--go:#161617;--goi:#FFFFFF;--soft:#F4F4F2;--navy:#161617;--onnavy:#FFFFFF;--yc:#E8A400;--rc:#C8102E;
+  --fd:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif}
+html[data-look=gallery][data-mode=dark]{--paper:#000;--card:#111113;--tile:#18181B;--ink:#F5F5F7;--mu:#A1A1A6;--line:#26262A;--go:#F5F5F7;--goi:#000;--soft:#1C1C1F;--navy:#F5F5F7;--onnavy:#000}
+html[data-look=gallery] h1,html[data-look=gallery] h2,html[data-look=gallery] h3{font-weight:700;letter-spacing:-.035em;line-height:1}
+/* pill button with a round arrow cell */
+html[data-look=gallery] .btn,html[data-look=gallery] .b{clip-path:none;border-radius:999px;min-height:50px;padding:0 8px 0 24px;gap:14px;font-weight:600}
+html[data-look=gallery] .btn::after,html[data-look=gallery] .b::after{content:"";width:34px;height:34px;border:0;border-radius:50%;margin:0;transform:none;
+  background:color-mix(in srgb,var(--fg) 16%,transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12h11m-4-5 5 5-5 5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat;transition:transform .25s}
+html[data-look=gallery] .btn:hover,html[data-look=gallery] .b:hover{--bg:var(--navy);--fg:var(--onnavy)}
+html[data-look=gallery] .btn:hover::after,html[data-look=gallery] .b:hover::after{transform:rotate(-45deg)}
+html[data-look=gallery] .btn.ghost,html[data-look=gallery] .b.g,html[data-look=gallery] .btn.light,html[data-look=gallery][data-mode=dark] .btn,html[data-look=gallery][data-mode=dark] .b,html[data-look=gallery] .spot .btn{--bg:var(--soft);--fg:var(--ink)}
+html[data-look=gallery] .btn.ghost::after,html[data-look=gallery] .b.g::after,html[data-look=gallery] .btn.light::after,html[data-look=gallery] .spot .btn::after{background-color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12h11m-4-5 5 5-5 5' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+html[data-look=gallery][data-mode=dark] .btn::after,html[data-look=gallery][data-mode=dark] .b::after{background-color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12h11m-4-5 5 5-5 5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+html[data-look=gallery] .btn.ghost:hover,html[data-look=gallery] .b.g:hover,html[data-look=gallery] .spot .btn:hover,html[data-look=gallery] .btn.light:hover{--bg:var(--line);--fg:var(--ink)}
+html[data-look=gallery] .btn:not(.ghost):not(.light):not(.wa)[id=hb]{--bg:var(--ink);--fg:var(--paper)}
+html[data-look=gallery][data-mode=dark] #hb::after{background-color:rgba(0,0,0,.12);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12h11m-4-5 5 5-5 5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+html[data-look=gallery] .btn.wa,html[data-look=gallery] .b.wo{--bg:var(--wa);--fg:#052611}
+html[data-look=gallery] .btn:disabled::after{display:none}
+html[data-look=gallery] .ban{background:var(--soft);color:var(--ink);font-size:13px}
+html[data-look=gallery] .hdr{border-bottom-color:transparent;background:color-mix(in srgb,var(--paper) 80%,transparent)}
+html[data-look=gallery] .logo{font-family:var(--fd);font-weight:800;font-size:24px;letter-spacing:-.02em}
+html[data-look=gallery] .bag{border:0;background:var(--soft)}
+html[data-look=gallery] #mode{border:0;background:var(--soft)}
+/* hero: centred words over a wide product stage */
+html[data-look=gallery] .hero{padding:72px 0 20px}
+html[data-look=gallery] .hgrid{grid-template-columns:1fr;gap:44px;text-align:center}
+html[data-look=gallery] .hcopy{align-items:center;padding:0}
+html[data-look=gallery] .hcopy h1{font-size:clamp(48px,7.6vw,104px);font-weight:700;line-height:.95;max-width:13ch}
+html[data-look=gallery] .hcopy p{margin:20px auto 30px;max-width:44ch}
+html[data-look=gallery] .hcta{justify-content:center}
+html[data-look=gallery] .spot{clip-path:none;border-radius:28px;background:var(--tile);color:var(--ink);min-height:0;grid-template-rows:auto auto}
+html[data-look=gallery] .spot .sp-pic{padding:48px 20px 10px}
+html[data-look=gallery] .spot .sp-pic svg,html[data-look=gallery] .spot .sp-pic img{width:min(46%,380px);filter:drop-shadow(0 40px 30px rgba(0,0,0,.18))}
+html[data-look=gallery] .spot .sp-num{display:none}
+html[data-look=gallery] .spot .sp-tag{left:50%;transform:translateX(-50%);top:24px;color:var(--mu)}
+html[data-look=gallery] .spot .sp-foot{border:0;justify-content:center;flex-direction:column;align-items:center;text-align:center;padding:10px 20px 40px;gap:16px}
+html[data-look=gallery] .spot .sp-foot h2{font-size:32px}
+html[data-look=gallery] .spot .sp-foot p{font-weight:500;color:var(--mu)}
+html[data-look=gallery] .trust{border:0;margin-top:30px}
+html[data-look=gallery] .trust li,html[data-look=gallery] .trust li+li{border:0;flex-direction:column;text-align:center;padding:18px 10px}
+html[data-look=gallery] .trust svg{color:var(--ink)}
+/* shop */
+html[data-look=gallery] .shop{padding-top:90px}
+html[data-look=gallery] .shead{flex-direction:column;align-items:center;text-align:center;gap:8px}
+html[data-look=gallery] .shead h2,html[data-look=gallery] .rhead h2{font-size:clamp(40px,5.4vw,68px)}
+html[data-look=gallery] .cats{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;overflow:visible}
+html[data-look=gallery] .cat{min-height:0;border:0;border-radius:999px;background:transparent;padding:10px 18px;flex-direction:row;align-items:baseline;gap:6px}
+html[data-look=gallery] .cat .cn{font-family:var(--ft);font-size:16px;font-weight:600}
+html[data-look=gallery] .cat .cc{font-size:12px}
+html[data-look=gallery] .cat:hover{background:var(--soft)}
+html[data-look=gallery] .cat[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+html[data-look=gallery] .bar{border:0;justify-content:center}
+html[data-look=gallery] input,html[data-look=gallery] select,html[data-look=gallery] textarea{border-radius:14px;background:var(--soft);border-color:transparent}
+html[data-look=gallery] input:focus,html[data-look=gallery] select:focus,html[data-look=gallery] textarea:focus{background:var(--card);border-color:var(--ink)}
+html[data-look=gallery] .srch input{border-radius:999px}
+html[data-look=gallery] .seg{border:0;border-radius:999px;background:var(--soft);padding:4px}
+html[data-look=gallery] .seg button{border-radius:999px;min-height:38px}
+html[data-look=gallery] .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 24px}
+html[data-look=gallery] .pic{border-radius:22px;aspect-ratio:1}
+html[data-look=gallery] .pic>svg{width:58%}
+html[data-look=gallery] .st{border-radius:999px;background:var(--paper);padding:5px 12px}
+html[data-look=gallery] .st i{display:none}
+html[data-look=gallery] .st.lo{color:#9A6A00}html[data-look=gallery] .st.ou{color:var(--rc)}
+html[data-look=gallery][data-mode=dark] .st.lo{color:var(--yc)}
+html[data-look=gallery] .info{align-items:center;text-align:center;padding-top:18px}
+html[data-look=gallery] .brand{color:var(--mu);letter-spacing:.02em}
+html[data-look=gallery] .info h3{font-family:var(--fd);font-size:21px;font-weight:700;letter-spacing:-.02em}
+html[data-look=gallery] .pr{font-family:var(--ft);font-weight:500;font-size:17px;color:var(--mu)}
+html[data-look=gallery] .ctl{width:100%;max-width:300px}
+html[data-look=gallery] .ctl select{text-align:center}
+html[data-look=gallery] .cz{justify-content:center;text-align:left}
+html[data-look=gallery] .card .lk2{align-self:center}
+html[data-look=gallery] .card:hover .pic>svg{transform:scale(1.05)}
+/* print band, reviews, pages */
+html[data-look=gallery] .print{background:var(--tile);color:var(--ink);margin:60px 20px 0;border-radius:32px}
+html[data-look=gallery] .pcopy p{color:var(--mu)}html[data-look=gallery] .pcopy .pfee{color:var(--ink)}
+html[data-look=gallery] .pshirt svg path:first-child{fill:#161617}
+html[data-look=gallery] .pshirt svg text{fill:#fff}
+html[data-look=gallery][data-mode=dark] .pshirt svg path:first-child{fill:#F5F5F7}
+html[data-look=gallery][data-mode=dark] .pshirt svg text{fill:#000}
+html[data-look=gallery] .rc,html[data-look=gallery] .tile{border:0;border-radius:22px;background:var(--soft)}
+html[data-look=gallery] .rf{border:0;border-radius:22px;background:var(--soft)}
+html[data-look=gallery] .rf input,html[data-look=gallery] .rf select,html[data-look=gallery] .rf textarea{background:var(--card)}
+html[data-look=gallery] .stars{color:var(--ink)}
+html[data-look=gallery] .mark{color:var(--soft);text-align:center}
+html[data-look=gallery] .chat,html[data-look=gallery] .mbox{border-radius:22px;overflow:hidden}
+html[data-look=gallery] .chat .dh{background:var(--soft);color:var(--ink)}
+html[data-look=gallery] .dr{background:var(--card)}
+html[data-look=gallery] .df{background:var(--soft)}
+html[data-look=gallery] .df input,html[data-look=gallery] .df select,html[data-look=gallery] .df textarea{background:var(--card)}
+html[data-look=gallery] .q button{border-radius:50%}
+html[data-look=gallery] .tagz{border-radius:999px}
+html[data-look=gallery] .note{border-left:0;border-radius:14px}
+html[data-look=gallery] .tick{background:var(--ink);color:var(--paper)}
+html[data-look=gallery] .tg{border-radius:999px}
+@media (max-width:1080px){html[data-look=gallery] .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){
+  html[data-look=gallery] .hero{padding-top:40px}
+  html[data-look=gallery] .spot .sp-pic svg,html[data-look=gallery] .spot .sp-pic img{width:70%}
+  html[data-look=gallery] .grid{gap:34px 12px}
+  html[data-look=gallery] .info h3{font-size:17px}
+  html[data-look=gallery] .cat{padding:8px 14px}
+  html[data-look=gallery] .print{margin:40px 12px 0;border-radius:24px}
+  html[data-look=gallery] .trust{grid-template-columns:1fr 1fr}
+}
+
+/* =====================================================================
+   TERRACE: loud streetwear, like Adidas Originals or Corteiz.
+   Ultra-wide type, flat Super Eagles green, tactile offset-shadow buttons.
+   ===================================================================== */
+html[data-look=terrace]{--paper:#FFFFFF;--card:#FFFFFF;--tile:#EFEFEA;--ink:#000;--mu:#4A4A4A;--line:#000;--go:#00843D;--goi:#fff;--soft:#EFEFEA;--navy:#000;--onnavy:#fff;--yc:#FFE100;--rc:#E10600;--grn:#00843D;
+  --fd:Boldonse,"Arial Black",Impact,sans-serif;--ft:"Work Sans",system-ui,sans-serif;--sh:4px}
+html[data-look=terrace][data-mode=dark]{--paper:#0B0B0B;--card:#141414;--tile:#1E1E1E;--ink:#fff;--mu:#B5B5B5;--line:#fff;--soft:#1E1E1E;--navy:#fff;--onnavy:#000;--grn:#00A84F}
+html[data-look=terrace] h1,html[data-look=terrace] h2,html[data-look=terrace] h3{font-weight:400;text-transform:uppercase;letter-spacing:0;line-height:1.18}
+/* tactile button: hard border, offset shadow that presses in */
+html[data-look=terrace] .btn,html[data-look=terrace] .b{clip-path:none;border:2px solid var(--ink);--bg:var(--yc);--fg:#000;box-shadow:var(--sh) var(--sh) 0 var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:14px;min-height:50px;transition:transform .08s,box-shadow .08s,background-color .15s}
+html[data-look=terrace] .btn::after,html[data-look=terrace] .b::after{display:none}
+html[data-look=terrace] .btn:hover,html[data-look=terrace] .b:hover{--bg:var(--yc);--fg:#000;transform:translate(-2px,-2px);box-shadow:calc(var(--sh) + 2px) calc(var(--sh) + 2px) 0 var(--ink)}
+html[data-look=terrace] .btn:active,html[data-look=terrace] .b:active{transform:translate(var(--sh),var(--sh));box-shadow:0 0 0 var(--ink)}
+html[data-look=terrace] .btn.ghost,html[data-look=terrace] .b.g,html[data-look=terrace] .btn.light,html[data-look=terrace] .spot .btn{--bg:var(--card);--fg:var(--ink)}
+html[data-look=terrace] .btn.ghost:hover,html[data-look=terrace] .b.g:hover,html[data-look=terrace] .btn.light:hover,html[data-look=terrace] .spot .btn:hover{--bg:var(--card);--fg:var(--ink)}
+html[data-look=terrace] .btn.wa,html[data-look=terrace] .b.wo{--bg:var(--wa);--fg:#000}
+html[data-look=terrace][data-mode=dark] .btn,html[data-look=terrace][data-mode=dark] .b{--bg:var(--yc);--fg:#000}
+html[data-look=terrace][data-mode=dark] .btn.ghost,html[data-look=terrace][data-mode=dark] .b.g{--bg:var(--card);--fg:var(--ink)}
+html[data-look=terrace] .btn:disabled{transform:none;box-shadow:none}
+html[data-look=terrace] .ban{background:var(--yc);color:#000;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:13px;border-bottom:2px solid #000}
+html[data-look=terrace] .hdr{background:var(--paper);border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .logo{font-family:var(--fd);font-weight:400;font-size:24px;letter-spacing:-.02em}
+html[data-look=terrace] .nav a{border-radius:0;font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.05em;color:var(--ink)}
+html[data-look=terrace] .nav a[aria-current=page]{background:var(--ink);color:var(--paper)}
+html[data-look=terrace] .bag,html[data-look=terrace] #mode{border:2px solid var(--ink);border-radius:0;background:var(--card)}
+html[data-look=terrace] .bag b{border-radius:0;background:var(--yc);color:#000}
+/* hero: flat green slab + white product card */
+html[data-look=terrace] .hero{padding:0;background:var(--grn);border-bottom:2px solid #000;color:#fff}
+html[data-look=terrace] .hgrid{padding-top:56px;padding-bottom:56px;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px}
+html[data-look=terrace] .hcopy h1{font-size:clamp(34px,5.2vw,74px);max-width:11ch;line-height:1.18;color:#fff}
+html[data-look=terrace] .hcopy p{color:#E6F5EC;font-weight:500}
+html[data-look=terrace] .hcta .btn.ghost{--bg:#fff;--fg:#000;border-color:#000}
+html[data-look=terrace] .spot{clip-path:none;background:var(--card);color:var(--ink);border:2px solid #000;box-shadow:10px 10px 0 #000;min-height:420px}
+html[data-look=terrace][data-mode=dark] .spot{box-shadow:10px 10px 0 var(--yc)}
+html[data-look=terrace] .spot .sp-pic{background:var(--tile);border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .spot .sp-num{color:transparent;-webkit-text-stroke:2px color-mix(in srgb,var(--ink) 12%,transparent);font-family:var(--fd);font-size:240px;top:-20px}
+html[data-look=terrace] .spot .sp-tag{color:var(--ink);background:var(--yc);padding:3px 8px;font-weight:700;color:#000}
+html[data-look=terrace] .spot .sp-foot{border:0}
+html[data-look=terrace] .spot .sp-foot h2{font-size:18px;line-height:1.2}
+html[data-look=terrace] .trust{border-top:0;border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .trust li+li{border-left:2px solid var(--ink)}
+html[data-look=terrace] .trust svg{color:var(--ink)}
+/* shop */
+html[data-look=terrace] .shead h2,html[data-look=terrace] .rhead h2{font-size:clamp(30px,4.6vw,60px)}
+html[data-look=terrace] .cat{border:2px solid var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink);margin:0 var(--sh) var(--sh) 0;transition:transform .08s,box-shadow .08s}
+html[data-look=terrace] .cat .cn{font-family:var(--fd);font-weight:400;font-size:15px;text-transform:uppercase;line-height:1.15}
+html[data-look=terrace] .cat:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+html[data-look=terrace] .cat[aria-pressed=true]{background:var(--grn);color:#fff;border-color:var(--ink);transform:translate(var(--sh),var(--sh));box-shadow:none}
+html[data-look=terrace] .cat[aria-pressed=true] .cc{color:#E6F5EC}
+html[data-look=terrace] .bar{border-bottom:2px solid var(--ink)}
+html[data-look=terrace] input,html[data-look=terrace] select,html[data-look=terrace] textarea{border:2px solid var(--ink)}
+html[data-look=terrace] input:focus,html[data-look=terrace] select:focus,html[data-look=terrace] textarea:focus{box-shadow:var(--sh) var(--sh) 0 var(--grn)}
+html[data-look=terrace] .seg{border:2px solid var(--ink)}
+html[data-look=terrace] .seg button{font-weight:700;text-transform:uppercase;font-size:13px;color:var(--ink)}
+html[data-look=terrace] .seg [aria-pressed=true]{background:var(--ink);color:var(--paper)}
+html[data-look=terrace] .chip{border:2px solid var(--ink);border-radius:0;font-weight:600}
+html[data-look=terrace] .grid{gap:30px 22px}
+html[data-look=terrace] .card{border:2px solid var(--ink);background:var(--card)}
+html[data-look=terrace] .pic{border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .st{border:2px solid #000;background:#fff;color:#000;font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.04em;top:10px;left:10px}
+html[data-look=terrace] .st.lo{background:var(--yc)}
+html[data-look=terrace] .st.ou{background:var(--rc);color:#fff}
+html[data-look=terrace] .st.ok{background:var(--grn);color:#fff}
+html[data-look=terrace] .st i{display:none}
+html[data-look=terrace] .info{padding:14px 14px 16px}
+html[data-look=terrace] .brand{color:var(--grn)}
+html[data-look=terrace] .info h3{font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.01em}
+html[data-look=terrace] .pr{font-family:var(--fd);font-weight:400;font-size:20px}
+html[data-look=terrace] .ctl .btn{margin-right:var(--sh)}
+/* print band */
+html[data-look=terrace] .print{background:var(--yc);color:#000;border-top:2px solid #000;border-bottom:2px solid #000}
+html[data-look=terrace] .pcopy h2{font-size:clamp(34px,5vw,70px);line-height:1.18}
+html[data-look=terrace] .pcopy p{color:#1A1A1A}html[data-look=terrace] .pcopy .pfee{color:#000}
+html[data-look=terrace] .print .btn.light{--bg:#000;--fg:#fff;border-color:#000;box-shadow:var(--sh) var(--sh) 0 #fff}
+html[data-look=terrace] .pshirt svg{filter:none}
+html[data-look=terrace] .pshirt svg path:first-child{fill:var(--grn,#00843D);stroke:#000;stroke-width:3}
+html[data-look=terrace] .pshirt svg text{fill:#fff}
+html[data-look=terrace] .pshirt svg path:nth-child(2){stroke:#000}
+/* reviews, pages, footer */
+html[data-look=terrace] .rc,html[data-look=terrace] .tile{border:2px solid var(--ink);box-shadow:var(--sh) var(--sh) 0 var(--ink)}
+html[data-look=terrace] .rf{border:2px solid var(--ink);box-shadow:8px 8px 0 var(--grn)}
+html[data-look=terrace] .rf h3,html[data-look=terrace] .tile h2,html[data-look=terrace] .cdone h3,html[data-look=terrace] .dh h2,html[data-look=terrace] .mbox h2{font-size:18px;line-height:1.2}
+html[data-look=terrace] .page h1{font-size:clamp(38px,7vw,84px)}
+html[data-look=terrace] .stars{color:#000}html[data-look=terrace][data-mode=dark] .stars{color:var(--yc)}
+html[data-look=terrace] .ftr{border-top:2px solid var(--ink)}
+html[data-look=terrace] .mark{font-size:clamp(46px,11.5vw,170px);color:var(--grn);line-height:.9;transform:translateY(12%)}
+html[data-look=terrace] .chat,html[data-look=terrace] .mbox{border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+html[data-look=terrace] .chat .dh{background:var(--grn);color:#fff;border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .dr{border-left:2px solid var(--ink)}
+html[data-look=terrace] .dh{border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .df{border-top:2px solid var(--ink)}
+html[data-look=terrace] .li{border-bottom:2px solid var(--ink)}
+html[data-look=terrace] .q button{border:2px solid var(--ink)}
+html[data-look=terrace] .tot span:last-child{font-family:var(--fd);font-weight:400;font-size:24px}
+html[data-look=terrace] .tick{background:var(--grn);border:2px solid #000;border-radius:0}
+html[data-look=terrace] .soc a{border:2px solid var(--ink);border-radius:0}
+html[data-look=terrace] .fab{border:2px solid #000;box-shadow:4px 4px 0 #000}
+html[data-look=terrace] .tg{border:2px solid var(--paper)}
+@media (max-width:860px){html[data-look=terrace] .hgrid{grid-template-columns:1fr;padding-top:36px;padding-bottom:44px}html[data-look=terrace] .spot{box-shadow:6px 6px 0 #000;min-height:360px}}
+@media (max-width:720px){
+  html[data-look=terrace] .logo{font-size:19px}
+  html[data-look=terrace] .hcopy h1{font-size:clamp(28px,8.6vw,44px)}
+  html[data-look=terrace] .cat .cn{font-size:13px}
+  html[data-look=terrace] .info{padding:10px 10px 12px}
+  html[data-look=terrace] .info h3{font-size:14px}
+  html[data-look=terrace] .pr{font-size:16px}
+  html[data-look=terrace] .btn{padding:0 14px;font-size:13px}
+  html[data-look=terrace] .trust li+li{border-left:0}
+  html[data-look=terrace] .trust li:nth-child(even){border-left:2px solid var(--ink);padding-left:10px}
+  html[data-look=terrace] .trust li:nth-child(n+3){border-top:2px solid var(--ink)}
+}
+
+/* preview switcher (only shown when previewing a design) */
+#lpick{position:fixed;left:12px;bottom:12px;z-index:95;display:flex;gap:4px;padding:5px;background:#111;border-radius:999px;font:600 13px system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#lpick a{color:#fff;text-decoration:none;padding:8px 14px;border-radius:999px}
+#lpick a[aria-current]{background:#fff;color:#111}
+@media (max-width:720px){#lpick{left:8px;bottom:8px;font-size:12px}#lpick a{padding:7px 10px}}
+
+/* dark-mode overrides that must beat the Matchday dark rules */
+html[data-look=gallery][data-mode=dark] .spot,html[data-look=gallery][data-mode=dark] .print{background:var(--tile);color:var(--ink)}
+html[data-look=gallery][data-mode=dark] .ban{background:var(--soft);color:var(--ink)}
+html[data-look=terrace][data-mode=dark] .spot{background:var(--card);color:var(--ink)}
+html[data-look=terrace][data-mode=dark] .print{background:var(--yc);color:#000}
+html[data-look=terrace][data-mode=dark] .ban{background:var(--yc);color:#000}
+html[data-look=terrace] .hcopy h1,html[data-look=terrace] .pcopy h2{line-height:1.32}
+html[data-look=terrace] h2,html[data-look=terrace] h3{line-height:1.3}
+html[data-look=terrace] .spot .sp-foot h2,html[data-look=terrace] .cat .cn{line-height:1.3}
+
+/* hero slideshow controls */
+html[data-look=gallery] .sp-ctl{left:50%;right:auto;top:auto;bottom:22px;transform:translateX(-50%)}
+html[data-look=gallery] .spot .sp-foot{padding-bottom:74px}
+html[data-look=gallery] .sp-arw{border-color:var(--line);background:var(--card);color:var(--ink)}
+html[data-look=gallery] .sp-arw:hover{background:var(--ink);color:var(--paper)}
+html[data-look=gallery] .sp-count,html[data-look=gallery] .sp-count b{color:var(--ink)}
+html[data-look=gallery] .sp-bar{left:28px;right:28px;bottom:12px;height:2px;background:var(--line);border-radius:2px;overflow:hidden}
+html[data-look=gallery] .sp-bar i{background:var(--ink)}
+html[data-look=gallery] .spot .sp-tag{top:24px}
+html[data-look=terrace] .sp-arw{border:2px solid var(--ink);border-radius:0;background:var(--card);color:var(--ink)}
+html[data-look=terrace] .sp-arw:hover{background:var(--yc);color:#000}
+html[data-look=terrace] .sp-count{background:var(--card);border:2px solid var(--ink);color:var(--ink);padding:6px 8px}
+html[data-look=terrace] .sp-count b{color:var(--ink)}
+html[data-look=terrace] .sp-bar{height:6px;background:var(--soft);border-top:2px solid var(--ink)}
+html[data-look=terrace] .sp-bar i{background:var(--grn)}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit Room</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head><body>
+<div id="ban"></div>
+<header class="top"><div class="wrap bar">
+<a class="logo disp" id="logo" href="#/home">KIT <span>ROOM</span></a>
+<nav class="nav" aria-label="Main menu"><a href="#/home" data-nav="home">Home</a><a href="#/about" data-nav="about">About us</a><a href="#/contact" data-nav="contact">Contact us</a></nav>
+<button class="b" id="openCart">Cart<b id="cartN">0</b></button>
+</div></header>
+
+<div id="pg-home">
+<section class="hero"><div class="wrap"><h1 class="disp" id="hh"></h1><p id="ht"></p><button class="b s" id="hb"></button><div class="tally"><div><strong class="disp" id="tIn">0</strong>in stock</div><div><strong class="disp" id="tOut">0</strong>sold out</div></div></div></section>
+<main class="wrap" id="shop">
+<div class="tools"><div class="chips" id="cats"></div><div class="row"><input type="search" id="q" placeholder="Search club, brand or item" aria-label="Search"><select id="lg" aria-label="League"></select><div class="seg" id="seg"><button data-s="all" aria-pressed="true">All</button><button data-s="in" aria-pressed="false">In stock</button><button data-s="out" aria-pressed="false">Sold out</button></div></div></div>
+<div class="count" id="count" aria-live="polite"></div><div class="grid" id="grid"></div>
+</main>
+<section class="wrap sec" id="reviews"><h2 class="disp">Customer reviews</h2><div class="rv" id="rv"></div>
+<form class="rf" id="rf"><h3 class="disp" style="font-size:26px">Bought from us? Leave a review</h3>
+<input name="name" placeholder="Your name" aria-label="Your name" maxlength="40" required>
+<select name="state" id="rstate" aria-label="Your state" required></select>
+<select name="rating" aria-label="Rating"><option value="5">★★★★★ 5 stars</option><option value="4">★★★★☆ 4 stars</option><option value="3">★★★☆☆ 3 stars</option><option value="2">★★☆☆☆ 2 stars</option><option value="1">★☆☆☆☆ 1 star</option></select>
+<textarea name="body" rows="3" placeholder="How was your order?" aria-label="Your review" maxlength="400" required></textarea>
+<div class="msg" id="rmsg" role="status"></div><button class="b">Submit review</button></form></section>
+</div>
+
+<section class="wrap page" id="pg-about" hidden><h1 class="disp">About us</h1><div id="abt"></div>
+<div class="cards"><div class="cc"><h2 class="disp">What we sell</h2><ul class="list"><li>Club jerseys from the Premier League, La Liga, Serie A, Bundesliga and Ligue 1</li><li>National team shirts</li><li>Football boots and turf trainers</li><li>Socks, shin guards and goalkeeper gloves</li><li>Footballs and sports bags</li></ul></div>
+<div class="cc"><h2 class="disp">Where we are</h2><p id="abtLoc"></p></div></div></section>
+
+<section class="wrap page" id="pg-contact" hidden><h1 class="disp">Contact us</h1><p>Questions about an item or an order? Reach us any of these ways.</p>
+<div class="cards"><div class="cc"><h2 class="disp">Phone</h2><a id="cPhone"></a></div><div class="cc"><h2 class="disp">Email</h2><a id="cMail"></a></div><div class="cc"><h2 class="disp">WhatsApp</h2><a id="cWa" target="_blank" rel="noopener">Chat on WhatsApp</a></div><div class="cc"><h2 class="disp">Location</h2><p id="cLoc"></p></div></div></section>
+
+<footer><div class="wrap">Stock levels are updated by the shop. <a href="/admin" style="color:inherit">Staff login</a></div></footer>
+
+<div class="dock">
+<section class="chat" id="chat" hidden aria-label="Chat with us">
+<div class="dh"><h2 class="disp">Chat with us</h2><button class="x" id="chatX" aria-label="Close chat">×</button></div>
+<form id="cf"><p class="mu" style="margin:0">Ask about an item or request a customized one. We reply on your phone or WhatsApp.</p>
+<input id="cn" placeholder="Your name" aria-label="Your name" autocomplete="name" required>
+<input id="cp" placeholder="Phone number" aria-label="Phone number" inputmode="tel" autocomplete="tel" required>
+<select id="cprod" aria-label="Item"></select>
+<textarea id="cmsg" placeholder="Type your message" aria-label="Message" required></textarea>
+<div class="msg bad" id="cerr" role="alert"></div>
+<button class="b" id="csend">Send message</button><a class="b g" id="cwa" target="_blank" rel="noopener">Open WhatsApp instead</a></form>
+<div class="cdone" id="cdone" hidden><h3 class="disp" style="font-size:26px">Message sent</h3><p style="margin:0">We’ll get back to you soon. To chat right now, continue on WhatsApp.</p><a class="b wo" id="cwa2" target="_blank" rel="noopener">Continue on WhatsApp</a><button class="b g" id="cagain">Send another</button></div>
+</section>
+<button class="fab" id="fab" aria-label="Chat with us" aria-expanded="false"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.8 2 6.8L3 29l6.6-2c1.9 1 4 1.6 6.3 1.6 7.2 0 13-5.7 13-12.8S23.200 3 16 3zm0 23.300c-2 0-3.900-.6-5.500-1.600l-.4-.2-3.900 1.200 1.200-3.800-.3-.4a10.200 10.200 0 0 1-1.600-5.500C5.500 10.300 10.200 5.600 16 5.600s10.500 4.700 10.500 10.300S21.800 26.300 16 26.300zm5.800-7.700c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.200-.8 1-1 1.200-.4.200-.7.100a8.500 8.500 0 0 1-4.200-3.700c-.3-.6.300-.5.900-1.700.1-.2 0-.4 0-.5l-1-2.300c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.100-.9.400s-1.200 1.200-1.200 2.900 1.200 3.300 1.400 3.500 2.400 3.700 5.800 5.100c2.100.9 2.900.9 4 .8.600-.1 1.900-.8 2.200-1.500s.3-1.400.2-1.500-.3-.2-.6-.3z"/></svg></button>
+<div class="soc" id="soc"></div>
+</div>
+<div class="tg" id="tg" role="status"></div>
+<div class="sc" id="sc"></div>
+<aside class="dr" id="cd" aria-label="Your cart">
+<div class="dh"><h2 class="disp">Your cart</h2><button class="x" id="closeCart" aria-label="Close">×</button></div>
+<div id="cartview" style="display:flex;flex-direction:column;flex:1;min-height:0">
+<div class="bd2" id="items"></div>
+<div class="df"><div class="tot"><span>Total</span><span id="total"></span></div>
+<div class="note" id="czmsg" hidden>Your cart has customized items. We’ll agree the details with you in chat before you pay.</div>
+<div id="chk" style="display:grid;gap:10px"><input id="cname" placeholder="Your name" aria-label="Your name" autocomplete="name"><input id="cphone" placeholder="Phone number" aria-label="Phone number" inputmode="tel" autocomplete="tel"><textarea id="caddr" rows="2" placeholder="Delivery address or note (optional)" aria-label="Delivery address or note"></textarea></div>
+<button class="b" id="order" disabled>Place order</button></div></div>
+<div class="done" id="done" hidden><h2 class="disp">Order saved</h2><p>Your order reference is <strong id="doneRef"></strong>.<br>Tap below to confirm it with us on WhatsApp.</p><a class="b wo" id="doneWa" target="_blank" rel="noopener">Confirm on WhatsApp</a><button class="b g" id="doneClose">Keep shopping</button></div>
+</aside>
+<script src="/store.js"></script>
+</body></html>
