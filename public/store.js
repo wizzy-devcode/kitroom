@@ -1,4 +1,5 @@
 const $ = i => document.getElementById(i), E = s => String(s ?? '').replace(/[&<>"']/g, c => '&#' + c.charCodeAt(0) + ';');
+let PAYON = false;
 const money = n => '₦' + (+n || 0).toLocaleString('en-NG');
 const EM = { Jerseys: '👕', Tracksuits: '🧥', Combos: '🎁', Boots: '👟', 'Grip socks': '🧦', Hose: '🧦', Socks: '🧦', 'Shin guards': '🛡️', 'Goalkeeper gloves': '🧤', Footballs: '⚽', Accessories: '🎒' };
 const ALL = 'All leagues';
@@ -175,7 +176,7 @@ function cartUI() {
   const msg = { none: 'Your cart has customized items. Send a customization request: we review it and approve or decline it before you can place the order.', pending: `Request ${czReq && czReq.ref} is waiting for approval. We will contact you on WhatsApp or by call, and this page updates when it is decided.`, approved: 'Approved! You can place your order now.' + note, declined: 'Your customization request was declined.' + note + ' Remove the customized items, or send a new request with different details.' }[zs];
   $('czmsg').hidden = !cz; $('czmsg').textContent = msg || ''; $('czmsg').className = 'note' + (cz && zs === 'approved' ? ' good' : cz && zs === 'declined' ? ' bad' : '');
   $('chk').hidden = gate;
-  $('order').textContent = !cz || zs === 'approved' ? 'Place order' : zs === 'pending' ? 'Waiting for approval' : zs === 'declined' ? 'Send a new request' : 'Send customization request';
+  $('order').textContent = !cz || zs === 'approved' ? (PAYON ? 'Proceed to payment' : 'Place order') : zs === 'pending' ? 'Waiting for approval' : zs === 'declined' ? 'Send a new request' : 'Send customization request';
   const dl = delivery($('ccountry').value, $('cstate').value);
   $('sub').textContent = money(t); $('dlv').textContent = gate ? 'After approval' : dl === null ? 'Select your state' : dl === 0 ? 'Free' : 'Not included, arranged after payment'; $('total').textContent = money(t);
   $('cartN').textContent = n; $('order').disabled = !cart.length || (cz && zs === 'pending'); save();
@@ -194,10 +195,33 @@ async function payNow(ref, btn) {
     if (!r.ok) throw new Error(j.error || 'Could not start the payment'); location.href = j.url;
   } catch (e) { toast(e.message); b.disabled = false; b.textContent = label; }
 }
+function showDone(kind, ref, p) {
+  p = p || {}; const ok = kind === 'paid' || kind === 'review';
+  $('doneTitle').textContent = { paid: 'Order placed', review: 'Payment received', saved: 'Order saved', retry: 'Payment not completed' }[kind];
+  $('doneTick').hidden = !ok && kind !== 'saved'; $('doneRef').textContent = ref;
+  $('doneMsg').textContent = {
+    paid: `Payment of ${p.total ? money(p.total) : 'your order'} received. Thank you! ${p.dmsg || 'We will contact you shortly to arrange delivery.'}`,
+    review: 'We received your payment but need to check the amount. We will contact you shortly.',
+    saved: `Your total is ${money(p.total || 0)} for the items. ${p.dmsg || ''} We will message you on WhatsApp with how to pay.`,
+    retry: `Your order is saved, but the payment did not go through. ${p.total ? 'Try again to pay ' + money(p.total) + '.' : 'Try again when you are ready.'}`
+  }[kind];
+  $('donePay').hidden = kind !== 'retry'; $('donePay').disabled = false; $('donePay').textContent = 'Try paying again'; $('donePay').onclick = () => payNow(ref);
+  $('doneWa').textContent = kind === 'paid' ? 'Send message on WhatsApp' : kind === 'retry' ? 'Pay or ask on WhatsApp instead' : 'Send message on WhatsApp';
+  $('doneWa').href = wa((kind === 'paid' || kind === 'review') ? (p.wa || `Hello, I have paid for order ${ref} on your website.`) : (p.waUnpaid || `Hello, about my order ${ref} on your website.`));
+  $('cartview').hidden = true; $('done').hidden = false;
+}
 function payBanner() {
   const q = new URLSearchParams(location.search || ''), st = q.get('pay'), ref = q.get('ref') || ''; if (!st) return;
   const msg = { success: `Payment received for order ${ref}. Thank you! If you are outside our free delivery state, we will contact you shortly to arrange delivery and its fee.`, review: `We received a payment for order ${ref} but need to check the amount. We will contact you shortly.`, pending: 'We could not confirm your payment yet. If you were charged, your order will update shortly. Message us on WhatsApp if it does not.', failed: 'Your payment was not completed.' }[st];
   if (!msg) return;
+  let pend = null; try { pend = JSON.parse(sessionStorage.getItem('krPending') || 'null'); } catch { }
+  if (pend && pend.ref !== ref) pend = null;
+  if (ref && (st === 'success' || st === 'review' || st === 'failed')) {   // show the result in the cart panel
+    showDone(st === 'success' ? 'paid' : st === 'review' ? 'review' : 'retry', ref, pend || {}); drawer(true);
+    if (st !== 'failed') try { sessionStorage.removeItem('krPending'); } catch { }
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch { }
+    return;
+  }
   const retry = (st === 'failed' || st === 'pending') && ref; $('payb').hidden = false;
   $('payb').innerHTML = E(msg) + (retry ? ' <button class="lk2" id="payAgain">Try paying again</button>' : '');
   if (retry) $('payAgain').onclick = () => payNow(ref, $('payAgain'));
@@ -259,7 +283,7 @@ $('order').onclick = async () => {
   if (!ng && !address) return toast('Enter your full delivery address');
   const where = ng ? (state === 'FCT Abuja' ? state : state + ' State') : state + ', ' + country;
   if (!home) {
-    const go = await confirmBox('Delivery fee is not included', `You pay ${money(cart.reduce((s, l) => s + unit(l) * l.q, 0))} for your items now. The delivery fee to ${where} is not included in this payment. Once your payment is successful, we will contact you to arrange delivery and its fee. Would you like to proceed?`, `We will call or WhatsApp you on ${phone}, so please make sure it is a valid number.`);
+    const go = await confirmBox('Delivery fee is not included', `You pay ${money(cart.reduce((s, l) => s + unit(l) * l.q, 0))} for your items now. The delivery fee to ${where} is not included in this payment. Once your payment is successful, we will contact you to arrange delivery and its fee. Would you like to proceed${PAYON ? ' to payment' : ''}?`, `We will call or WhatsApp you on ${phone}, so please make sure it is a valid number.`);
     if (!go) return;
   }
   const b = $('order'); b.disabled = true; b.textContent = 'Saving…';
@@ -267,14 +291,20 @@ $('order').onclick = async () => {
   try {
     const r = await fetch('/api/orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, phone, email, country, state, address, landmark, carpark, items: cart.map(l => ({ id: l.id, size: l.z, qty: l.q, cz: !!l.cz })), customization: hasCz() && czReq ? { ref: czReq.ref, token: czReq.token } : undefined }) });
     const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Could not place the order');
-    $('doneRef').textContent = j.ref;
-    $('doneMsg').textContent = home ? `Your total is ${money(j.total)} and delivery in ${where} is free.` : `Your total is ${money(j.total)} for the items. The delivery fee to ${where} is not included: once your payment is successful, we will contact you on ${phone} to arrange delivery and its fee.`;
-    $('doneWa').textContent = home ? 'Confirm on WhatsApp' : 'Send message on WhatsApp';
-    $('donePay').hidden = !j.payable; $('donePay').disabled = false; $('donePay').textContent = 'Pay now with Paystack'; $('donePay').onclick = () => payNow(j.ref);
-    $('doneMsg').textContent += j.payable ? ' Pay now by card, bank transfer or USSD.' : ' We will message you on WhatsApp with how to pay.';
-    $('doneWa').href = wa(`Hello, I’m ${name}. I just placed order ${j.ref} on your website:\n${lines.join('\n')}\nDelivery to ${ng ? state : state + ', ' + country}: ${j.excluded ? 'not included, to be arranged after payment' : 'Free'}\nAddress: ${address}${landmark ? ' (near ' + landmark + ')' : ''}${carpark ? '\nNearest car park: ' + carpark : ''}\nTotal for items: ${money(j.total)}${j.excluded ? ' (delivery fee not included)' : ''}\nPlease confirm it’s available.`);
+    const dmsg = home ? `Delivery in ${where} is free. We will call or WhatsApp you on ${phone} to arrange it.` : `The delivery fee to ${where} is not included. We will call or WhatsApp you on ${phone} to arrange delivery and its fee.`;
+    const waTxt = paid => `Hello, I’m ${name}. ${paid ? 'I have paid for' : 'I just placed'} order ${j.ref} on your website:\n${lines.join('\n')}\nDelivery to ${ng ? state : state + ', ' + country}: ${j.excluded ? 'not included, to be arranged' : 'Free'}\nAddress: ${address}${landmark ? ' (near ' + landmark + ')' : ''}${carpark ? '\nNearest car park: ' + carpark : ''}\n${paid ? 'Amount paid' : 'Total for items'}: ${money(j.total)}${j.excluded ? ' (delivery fee not included)' : ''}`;
     if (hasCz()) { czReq = null; saveReq(); }
-    cart = []; cartUI(); $('cartview').hidden = true; $('done').hidden = false;
+    cart = []; cartUI();
+    if (j.payable) {   // go straight to Paystack; the "Order placed" screen shows when they come back paid
+      try { sessionStorage.setItem('krPending', JSON.stringify({ ref: j.ref, total: j.total, dmsg, wa: waTxt(true), waUnpaid: waTxt(false) })); } catch { }
+      b.textContent = 'Opening payment…';
+      try {
+        const pr = await fetch('/api/orders/' + encodeURIComponent(j.ref) + '/pay', { method: 'POST' }), pj = await pr.json();
+        if (!pr.ok) throw new Error(pj.error || 'Could not open the payment page');
+        location.href = pj.url; return;
+      } catch (e) { toast(e.message); showDone('retry', j.ref, { total: j.total, dmsg, waUnpaid: waTxt(false) }); }
+    } else showDone('saved', j.ref, { total: j.total, dmsg, waUnpaid: waTxt(false) });
+    drawer(true);
   } catch (e) { toast(e.message); }
   cartUI();
 };
@@ -366,6 +396,7 @@ $('rf').onsubmit = async e => {
 fetch('/api/store').then(r => r.json()).then(d => {
   D = d;
   try { cart = (JSON.parse(localStorage.getItem('cart2')) || []).filter(l => P(l.id) && l.q > 0); } catch { cart = []; }
+  fetch('/api/paystatus').then(r => r.ok ? r.json() : null).then(j => { PAYON = !!(j && j.on); cartUI(); }).catch(() => { });
   head(); filters(); grid(); spotlight(); place(); reviews(); route(); payBanner(); refreshReq(true);
 { const iv = setInterval(() => { if (czReq && czReq.status === 'pending') refreshReq(); }, 20000); if (iv && iv.unref) iv.unref(); }
 }).catch(() => { $('grid').innerHTML = '<div class="empty">Couldn’t load the store. Please refresh.</div>'; });
