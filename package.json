@@ -1,0 +1,14 @@
+{
+  "name": "kit-room",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sports kit store with staff admin and saved orders",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.5.0",
+    "express": "^4.21.2",
+    "multer": "^2.0.0"
+  }
+}
