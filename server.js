@@ -1,6 +1,8 @@
 const express = require('express'), Database = require('better-sqlite3'), bcrypt = require('bcryptjs'),
   multer = require('multer'), crypto = require('crypto'), fs = require('fs'), path = require('path');
 
+// Local testing: read settings from a .env file next to this one (Railway uses its Variables instead)
+try { if (typeof process.loadEnvFile === 'function' && fs.existsSync(path.join(__dirname, '.env'))) process.loadEnvFile(path.join(__dirname, '.env')); } catch (e) { console.error('Could not read .env:', e.message); }
 const DATA = process.env.DATA_DIR || path.join(__dirname, 'data'), UP = path.join(DATA, 'uploads');
 fs.mkdirSync(UP, { recursive: true });
 const db = new Database(path.join(DATA, 'store.db'));
@@ -25,6 +27,7 @@ const oc = db.prepare('PRAGMA table_info(orders)').all().map(c => c.name);
 if (!oc.includes('state')) db.exec("ALTER TABLE orders ADD COLUMN state TEXT DEFAULT ''");
 if (!oc.includes('delivery')) db.exec('ALTER TABLE orders ADD COLUMN delivery INTEGER DEFAULT 0');
 if (!oc.includes('delivery_tbc')) db.exec('ALTER TABLE orders ADD COLUMN delivery_tbc INTEGER DEFAULT 0');
+if (!oc.includes('delivery_sep')) db.exec('ALTER TABLE orders ADD COLUMN delivery_sep INTEGER DEFAULT 0');   // 1 = delivery fee is paid separately, never part of total
 [['email', "TEXT DEFAULT ''"], ['payment_status', "TEXT DEFAULT 'unpaid'"], ['paid_at', 'INTEGER'], ['paid_amount', 'INTEGER'], ['pay_channel', "TEXT DEFAULT ''"]].forEach(([c, t]) => { if (!oc.includes(c)) db.exec(`ALTER TABLE orders ADD COLUMN ${c} ${t}`); });
 ['country', 'landmark', 'carpark'].forEach(c => { if (!oc.includes(c)) db.exec(`ALTER TABLE orders ADD COLUMN ${c} TEXT DEFAULT ''`); });
 
@@ -108,11 +111,12 @@ app.post('/api/orders', limit(10, 36e5, 'order'), (req, res) => {
     czl.forEach((l, i) => { l.custom = chk.details[i]; l.fee = chk.fees[i]; l.price += l.fee; });
   }
   lines.forEach(l => { if (!l.cz) delete l.cz; });
-  const subtotal = lines.reduce((s, l) => s + l.qty * l.price, 0), dv = EX.deliveryFor(country, state), tbc = dv === null ? 1 : 0, delivery = dv === null ? 0 : dv, total = subtotal + delivery;
+  // The customer pays for the items only. Delivery (free in the free state) is arranged and charged separately after payment.
+  const subtotal = lines.reduce((s, l) => s + l.qty * l.price, 0), dv = EX.deliveryFor(country, state), free = dv === 0, tbc = free ? 0 : 1, delivery = 0, total = subtotal;
   let ref; do { ref = 'KR' + (10000 + crypto.randomInt(90000)); } while (db.prepare('SELECT 1 FROM orders WHERE ref=?').get(ref));
-  db.prepare('INSERT INTO orders(ref,name,phone,address,items,total,state,delivery,country,landmark,carpark,delivery_tbc,email,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(ref, name, phone, address, JSON.stringify(lines), total, state, delivery, country, landmark, carpark, tbc, email, Date.now());
+  db.prepare('INSERT INTO orders(ref,name,phone,address,items,total,state,delivery,country,landmark,carpark,delivery_tbc,delivery_sep,email,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,1,?,?)').run(ref, name, phone, address, JSON.stringify(lines), total, state, delivery, country, landmark, carpark, tbc, email, Date.now());
   if (czl.length) CZR.markUsed(b.customization.ref, ref);
-  res.json({ ref, total, subtotal, delivery, tbc: !!tbc, payable: !!(PS && PS.enabled() && !tbc && total > 0) });
+  res.json({ ref, total, subtotal, delivery, tbc: !!tbc, excluded: !free, payable: !!(PS && PS.enabled() && total > 0) });
 });
 
 /* ---------- auth routes ---------- */
@@ -169,7 +173,10 @@ A.patch('/orders/:id/delivery', (req, res) => {
   const o = db.prepare('SELECT * FROM orders WHERE id=?').get(+req.params.id); if (!o) return res.status(404).json({ error: 'Order not found' });
   if (String(req.body.fee ?? '').trim() === '') return res.status(400).json({ error: 'Enter the delivery fee (0 for free)' });
   const fee = int(req.body.fee), sub = JSON.parse(o.items).reduce((t, i) => t + i.qty * i.price, 0);
-  db.prepare('UPDATE orders SET delivery=?, delivery_tbc=0, total=? WHERE id=?').run(fee, sub + fee, o.id); res.json({ ok: true });
+  if (o.delivery_sep) db.prepare('UPDATE orders SET delivery=?, delivery_tbc=0 WHERE id=?').run(fee, o.id);   // new orders: record the agreed fee, the paid total stays items only
+  else if (o.payment_status === 'paid') return res.status(400).json({ error: 'This older order is already paid. Agree the delivery fee with the customer directly.' });
+  else db.prepare('UPDATE orders SET delivery=?, delivery_tbc=0, total=? WHERE id=?').run(fee, sub + fee, o.id);
+  res.json({ ok: true });
 });
 A.patch('/orders/:id', (req, res) => {
   const s = req.body.status, o = db.prepare('SELECT * FROM orders WHERE id=?').get(+req.params.id);
@@ -200,6 +207,7 @@ A.post('/password', limit(10, 9e5, 'pw'), (req, res) => {
 EX = require('./extras')({ app, db, A, limit, str, int, site, prod });
 CZR = require('./customize')({ app, db, A, limit, str, EX });
 PS = require('./paystack')({ app, db, A, limit, str, applyStatus });
+app.get('/api/paystatus', (req, res) => res.json({ on: !!(PS && PS.enabled()) }));   // lets the shop say "Proceed to payment"
 app.use('/api/admin', A);
 
 /* ---------- static ---------- */

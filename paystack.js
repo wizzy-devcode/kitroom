@@ -62,7 +62,7 @@ module.exports = ({ app, db, A, limit, str, applyStatus }) => {
     if (!o) return bad(404, 'Order not found');
     if (o.payment_status === 'paid') return bad(400, 'This order is already paid');
     if (o.status === 'Cancelled') return bad(400, 'This order was cancelled');
-    if (o.delivery_tbc) return bad(400, 'We will confirm your delivery fee first, then send you a payment link');
+    if (o.delivery_tbc && !o.delivery_sep) return bad(400, 'We will confirm your delivery fee first, then send you a payment link');
     if (!o.email || !(o.total > 0)) return bad(400, 'This order cannot be paid online. Please message us on WhatsApp.');
     try { res.json({ url: (await initialize(o, req)).url }); }
     catch (e) { console.error('Paystack initialize failed:', e.message); bad(502, 'Could not start the payment. Please try again or confirm on WhatsApp.'); }
@@ -94,7 +94,7 @@ module.exports = ({ app, db, A, limit, str, applyStatus }) => {
     if (!enabled()) return bad(503, 'Paystack is not connected yet. See the Payments tab.');
     let o = getOrder(+req.params.id); if (!o) return bad(404, 'Order not found');
     if (o.payment_status === 'paid') return bad(400, 'This order is already paid');
-    if (o.delivery_tbc) return bad(400, 'Set the delivery fee first');
+    if (o.delivery_tbc && !o.delivery_sep) return bad(400, 'Set the delivery fee first');
     if (!o.email) { const em = str(req.body.email, 120); if (!EMAIL.test(em)) return bad(400, 'Add the customer’s email to create a payment link'); db.prepare('UPDATE orders SET email=? WHERE id=?').run(em, o.id); o = getOrder(o.id); }
     try { const r = await initialize(o, req); res.json({ url: r.url, amount: o.total }); }
     catch (e) { console.error('Paystack initialize failed:', e.message); bad(502, 'Paystack could not create the link: ' + e.message); }
