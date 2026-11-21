@@ -3,66 +3,112 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kit Room</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/style.css">
+<meta name="theme-color" content="#0F1B2D">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Boldonse&family=Work+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/store.css">
+<link rel="stylesheet" href="/looks.css">
+<script>(function(){var L=['matchday','gallery','terrace'],q=new URLSearchParams(location.search).get('look'),l='';try{if(q&&L.indexOf(q)>-1)sessionStorage.setItem('krLookP',q);l=sessionStorage.getItem('krLookP')||'';}catch(e){l=q||''}window.KR_LOOKP=L.indexOf(l)>-1?l:'';if(!window.KR_LOOKP){try{l=localStorage.getItem('krLook')||''}catch(e){}}document.documentElement.setAttribute('data-look',L.indexOf(l)>-1?l:'matchday')})();
+try{var m=localStorage.getItem('krMode')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-mode',m)}catch(e){}</script>
 </head><body>
-<div id="ban"></div>
-<header class="top"><div class="wrap bar">
-<a class="logo disp" id="logo" href="#/home">KIT <span>ROOM</span></a>
-<nav class="nav" aria-label="Main menu"><a href="#/home" data-nav="home">Home</a><a href="#/about" data-nav="about">About us</a><a href="#/contact" data-nav="contact">Contact us</a></nav>
-<button class="b" id="openCart">Cart<b id="cartN">0</b></button>
+<a class="skip" href="#shop">Skip to products</a>
+<div id="ban" class="ban"></div>
+<header class="hdr"><div class="w hbar">
+  <a class="logo" id="logo" href="#/home">KIT ROOM</a>
+  <nav class="nav" aria-label="Main menu"><a href="#/home" data-nav="home">Shop</a><a href="#/about" data-nav="about">About us</a><a href="#/contact" data-nav="contact">Contact us</a></nav>
+  <div class="acts"><button class="bag" id="openCart" aria-label="Open cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.1a1 1 0 0 1-1 .9H7.2a1 1 0 0 1-1-.9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>Cart</span><b id="cartN">0</b></button></div>
 </div></header>
+<div class="w"><div class="note" id="payb" hidden role="status"></div></div>
 
 <div id="pg-home">
-<section class="hero"><div class="wrap"><h1 class="disp" id="hh"></h1><p id="ht"></p><button class="b s" id="hb"></button><div class="tally"><div><strong class="disp" id="tIn">0</strong>in stock</div><div><strong class="disp" id="tOut">0</strong>sold out</div></div></div></section>
-<main class="wrap" id="shop">
-<div class="tools"><div class="chips" id="cats"></div><div class="row"><input type="search" id="q" placeholder="Search club, brand or item" aria-label="Search"><select id="lg" aria-label="League"></select><div class="seg" id="seg"><button data-s="all" aria-pressed="true">All</button><button data-s="in" aria-pressed="false">In stock</button><button data-s="out" aria-pressed="false">Sold out</button></div></div></div>
-<div class="count" id="count" aria-live="polite"></div><div class="grid" id="grid"></div>
+<section class="hero"><div class="w hgrid">
+  <div class="hcopy">
+    <h1 id="hh"></h1>
+    <p id="ht"></p>
+    <div class="hcta"><button class="btn" id="hb"></button><a class="btn ghost" id="hwa" target="_blank" rel="noopener">Chat on WhatsApp</a></div>
+  </div>
+  <aside class="spot" id="spot" aria-label="Featured item"></aside>
+</div></section>
+
+<ul class="w trust" id="trust" aria-label="Why buy from us"></ul>
+
+<main class="w shop" id="shop">
+  <div class="shead"><h2>Shop the kit</h2><p class="mu"><b id="tIn">0</b> in stock, <b id="tOut">0</b> sold out</p></div>
+  <div class="cats" id="cats" role="group" aria-label="Categories"></div>
+  <div class="bar" id="toolbar">
+    <label class="srch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="Search a club, brand or item" aria-label="Search"></label>
+    <select id="lg" aria-label="League"></select>
+    <div class="seg" id="seg" role="group" aria-label="Stock"><button data-s="all" aria-pressed="true">All</button><button data-s="in" aria-pressed="false">In stock</button><button data-s="out" aria-pressed="false">Sold out</button></div>
+  </div>
+  <div class="bar sub" id="boots" hidden><div class="pills" id="bt" aria-label="Boot type"></div><select id="bf" aria-label="Brand"></select><select id="mf" aria-label="Model"></select></div>
+  <p class="count" id="count" aria-live="polite"></p>
+  <div class="grid" id="grid"></div>
 </main>
-<section class="wrap sec" id="reviews"><h2 class="disp">Customer reviews</h2><div class="rv" id="rv"></div>
-<form class="rf" id="rf"><h3 class="disp" style="font-size:26px">Bought from us? Leave a review</h3>
-<input name="name" placeholder="Your name" aria-label="Your name" maxlength="40" required>
-<select name="state" id="rstate" aria-label="Your state" required></select>
-<select name="rating" aria-label="Rating"><option value="5">★★★★★ 5 stars</option><option value="4">★★★★☆ 4 stars</option><option value="3">★★★☆☆ 3 stars</option><option value="2">★★☆☆☆ 2 stars</option><option value="1">★☆☆☆☆ 1 star</option></select>
-<textarea name="body" rows="3" placeholder="How was your order?" aria-label="Your review" maxlength="400" required></textarea>
-<div class="msg" id="rmsg" role="status"></div><button class="b">Submit review</button></form></section>
+
+<section class="print"><div class="w pgrid">
+  <div class="pcopy">
+    <h2>Your name.<br>Your number.</h2>
+    <p>We print names, numbers and league patches on jerseys, tracksuits, boots, balls and gloves. Tick “Customize” on any item, then send us the details. We confirm every print with you before you pay.</p>
+    <p class="pfee" id="pfee"></p>
+    <button class="btn light" id="czb">Ask about printing</button>
+  </div>
+  <div class="pshirt" aria-hidden="true"><svg viewBox="0 0 200 200"><path d="M66 16 24 40 8 84l32 12 12-20v108h96V76l12 20 32-12-16-44-42-24c-4 10-18 16-34 16s-30-6-34-16z" fill="#F1F2EE"/><path d="M66 16c4 10 18 16 34 16s30-6 34-16" fill="none" stroke="#D62828" stroke-width="5"/><text x="100" y="74" text-anchor="middle" font-family="'Big Shoulders Display',Impact,sans-serif" font-weight="800" font-size="19" letter-spacing="2" fill="#0F1B2D">YOUR NAME</text><text x="100" y="156" text-anchor="middle" font-family="'Big Shoulders Display',Impact,sans-serif" font-weight="900" font-size="78" fill="#0F1B2D">10</text></svg></div>
+</div></section>
+
+<section class="w rev" id="reviews">
+  <div class="rhead"><h2>What customers say</h2></div>
+  <div class="rgrid"><div class="rv" id="rv"></div>
+  <form class="rf" id="rf"><h3>Bought from us? Leave a review</h3>
+    <input name="name" placeholder="Your name" aria-label="Your name" maxlength="40" required>
+    <select name="state" id="rstate" aria-label="Your state" required></select>
+    <select name="rating" aria-label="Rating"><option value="5">★★★★★  5 stars</option><option value="4">★★★★☆  4 stars</option><option value="3">★★★☆☆  3 stars</option><option value="2">★★☆☆☆  2 stars</option><option value="1">★☆☆☆☆  1 star</option></select>
+    <textarea name="body" rows="3" placeholder="How was your order?" aria-label="Your review" maxlength="400" required></textarea>
+    <div class="msg" id="rmsg" role="status"></div><button class="btn">Send review</button></form></div>
+</section>
 </div>
 
-<section class="wrap page" id="pg-about" hidden><h1 class="disp">About us</h1><div id="abt"></div>
-<div class="cards"><div class="cc"><h2 class="disp">What we sell</h2><ul class="list"><li>Club jerseys from the Premier League, La Liga, Serie A, Bundesliga and Ligue 1</li><li>National team shirts</li><li>Football boots and turf trainers</li><li>Socks, shin guards and goalkeeper gloves</li><li>Footballs and sports bags</li></ul></div>
-<div class="cc"><h2 class="disp">Where we are</h2><p id="abtLoc"></p></div></div></section>
+<section class="w page" id="pg-about" hidden><h1>About us</h1><div class="lead" id="abt"></div>
+<div class="tiles"><div class="tile"><h2>What we sell</h2><ul><li>Club jerseys from the Premier League, La Liga, Serie A, Bundesliga and Ligue 1</li><li>National team shirts</li><li>Football boots and turf trainers</li><li>Socks, shin guards and goalkeeper gloves</li><li>Footballs, tracksuits and bags</li></ul></div>
+<div class="tile"><h2>Where we are</h2><p id="abtLoc"></p></div></div></section>
 
-<section class="wrap page" id="pg-contact" hidden><h1 class="disp">Contact us</h1><p>Questions about an item or an order? Reach us any of these ways.</p>
-<div class="cards"><div class="cc"><h2 class="disp">Phone</h2><a id="cPhone"></a></div><div class="cc"><h2 class="disp">Email</h2><a id="cMail"></a></div><div class="cc"><h2 class="disp">WhatsApp</h2><a id="cWa" target="_blank" rel="noopener">Chat on WhatsApp</a></div><div class="cc"><h2 class="disp">Location</h2><p id="cLoc"></p></div></div></section>
+<section class="w page" id="pg-contact" hidden><h1>Contact us</h1><p class="lead">Questions about an item or an order? Reach us any of these ways.</p>
+<div class="tiles"><div class="tile"><h2>Phone</h2><a id="cPhone"></a></div><div class="tile"><h2>Email</h2><a id="cMail"></a></div><div class="tile"><h2>WhatsApp</h2><a id="cWa" target="_blank" rel="noopener">Chat on WhatsApp</a></div><div class="tile"><h2>Location</h2><p id="cLoc"></p></div></div></section>
 
-<footer><div class="wrap">Stock levels are updated by the shop. <a href="/admin" style="color:inherit">Staff login</a></div></footer>
+<footer class="ftr"><div class="w">
+  <div class="fcols"><div><b>Shop</b><a href="#/home">All items</a><a href="#/about">About us</a><a href="#/contact">Contact us</a></div><div><b>Help</b><span>Delivery is confirmed with you on WhatsApp before dispatch.</span><span>Pay by card, bank transfer or USSD through Paystack.</span></div><div><b>Staff</b><a href="/admin">Staff login</a></div></div>
+  <div class="mark" aria-hidden="true">KIT ROOM</div>
+</div></footer>
 
 <div class="dock">
 <section class="chat" id="chat" hidden aria-label="Chat with us">
-<div class="dh"><h2 class="disp">Chat with us</h2><button class="x" id="chatX" aria-label="Close chat">×</button></div>
+<div class="dh"><h2>Chat with us</h2><button class="x" id="chatX" aria-label="Close chat">×</button></div>
 <form id="cf"><p class="mu" style="margin:0">Ask about an item or request a customized one. We reply on your phone or WhatsApp.</p>
 <input id="cn" placeholder="Your name" aria-label="Your name" autocomplete="name" required>
 <input id="cp" placeholder="Phone number" aria-label="Phone number" inputmode="tel" autocomplete="tel" required>
 <select id="cprod" aria-label="Item"></select>
+<div id="czf" hidden></div>
 <textarea id="cmsg" placeholder="Type your message" aria-label="Message" required></textarea>
 <div class="msg bad" id="cerr" role="alert"></div>
-<button class="b" id="csend">Send message</button><a class="b g" id="cwa" target="_blank" rel="noopener">Open WhatsApp instead</a></form>
-<div class="cdone" id="cdone" hidden><h3 class="disp" style="font-size:26px">Message sent</h3><p style="margin:0">We’ll get back to you soon. To chat right now, continue on WhatsApp.</p><a class="b wo" id="cwa2" target="_blank" rel="noopener">Continue on WhatsApp</a><button class="b g" id="cagain">Send another</button></div>
+<button class="btn" id="csend">Send message</button><a class="btn wa" id="cwa" target="_blank" rel="noopener">Open WhatsApp instead</a></form>
+<div class="cdone" id="cdone" hidden><h3 id="cdoneTitle">Message sent</h3><p id="cdoneMsg" style="margin:0">We’ll get back to you soon. To chat right now, continue on WhatsApp.</p><button class="btn" id="cview" hidden>View my cart</button><a class="btn wa" id="cwa2" target="_blank" rel="noopener">Continue on WhatsApp</a><button class="btn ghost" id="cagain">Send another</button></div>
 </section>
-<button class="fab" id="fab" aria-label="Chat with us" aria-expanded="false"><svg viewBox="0 0 32 32"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.8 2 6.8L3 29l6.6-2c1.9 1 4 1.6 6.3 1.6 7.2 0 13-5.7 13-12.8S23.200 3 16 3zm0 23.300c-2 0-3.900-.6-5.500-1.600l-.4-.2-3.900 1.200 1.200-3.800-.3-.4a10.200 10.200 0 0 1-1.600-5.500C5.500 10.300 10.200 5.600 16 5.600s10.500 4.700 10.500 10.300S21.800 26.300 16 26.300zm5.800-7.700c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.200-.8 1-1 1.200-.4.200-.7.100a8.500 8.500 0 0 1-4.200-3.700c-.3-.6.300-.5.900-1.700.1-.2 0-.4 0-.5l-1-2.300c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.100-.9.400s-1.200 1.200-1.200 2.900 1.200 3.300 1.400 3.500 2.400 3.700 5.800 5.100c2.100.9 2.900.9 4 .8.600-.1 1.900-.8 2.200-1.500s.3-1.400.2-1.500-.3-.2-.6-.3z"/></svg></button>
 <div class="soc" id="soc"></div>
+<button class="fab" id="fab" aria-label="Chat with us" aria-expanded="false"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.8 2 6.8L3 29l6.6-2c1.9 1 4 1.6 6.3 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.3c-2 0-3.9-.6-5.5-1.6l-.4-.2-3.9 1.2 1.2-3.8-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.5 10.3 10.2 5.6 16 5.6s10.5 4.7 10.5 10.3S21.8 26.3 16 26.3zm5.8-7.7c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.5 8.5 0 0 1-4.2-3.7c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.2-1.2 2.9 1.2 3.3 1.4 3.5 2.4 3.7 5.8 5.1c2.1.9 2.9.9 4 .8.6-.1 1.9-.8 2.2-1.5s.3-1.4.2-1.5-.3-.2-.6-.3z"/></svg></button>
 </div>
 <div class="tg" id="tg" role="status"></div>
 <div class="sc" id="sc"></div>
 <aside class="dr" id="cd" aria-label="Your cart">
-<div class="dh"><h2 class="disp">Your cart</h2><button class="x" id="closeCart" aria-label="Close">×</button></div>
-<div id="cartview" style="display:flex;flex-direction:column;flex:1;min-height:0">
-<div class="bd2" id="items"></div>
-<div class="df"><div class="tot"><span>Total</span><span id="total"></span></div>
+<div class="dh"><h2>Your cart</h2><button class="x" id="closeCart" aria-label="Close">×</button></div>
+<div id="cartview" class="cv">
+<div class="items" id="items"></div>
+<div class="df"><div class="sumrow"><span>Items</span><span id="sub"></span></div><div class="sumrow"><span>Delivery</span><span id="dlv"></span></div><div class="tot"><span>Total</span><span id="total"></span></div>
 <div class="note" id="czmsg" hidden>Your cart has customized items. We’ll agree the details with you in chat before you pay.</div>
-<div id="chk" style="display:grid;gap:10px"><input id="cname" placeholder="Your name" aria-label="Your name" autocomplete="name"><input id="cphone" placeholder="Phone number" aria-label="Phone number" inputmode="tel" autocomplete="tel"><textarea id="caddr" rows="2" placeholder="Delivery address or note (optional)" aria-label="Delivery address or note"></textarea></div>
-<button class="b" id="order" disabled>Place order</button></div></div>
-<div class="done" id="done" hidden><h2 class="disp">Order saved</h2><p>Your order reference is <strong id="doneRef"></strong>.<br>Tap below to confirm it with us on WhatsApp.</p><a class="b wo" id="doneWa" target="_blank" rel="noopener">Confirm on WhatsApp</a><button class="b g" id="doneClose">Keep shopping</button></div>
+<div id="chk" class="chk"><input id="cname" placeholder="Your name" aria-label="Your name" autocomplete="name"><input id="cphone" placeholder="Phone number" aria-label="Phone number" inputmode="tel" autocomplete="tel"><input id="cemail" type="email" placeholder="Email address (for your payment receipt)" aria-label="Email address" autocomplete="email">
+<p class="mu" id="pnote">Use a valid call or WhatsApp number so we can reach you.</p><select id="ccountry" aria-label="Country"></select><select id="cstate" aria-label="Your state"></select><input id="cregion" placeholder="State or region" aria-label="State or region" hidden><textarea id="caddr" rows="2" placeholder="Address or note (optional)" aria-label="Delivery address"></textarea><input id="clm" placeholder="Closest landmark" aria-label="Closest landmark" hidden><input id="ccp" placeholder="Nearest car park" aria-label="Nearest car park" hidden><p class="mu" id="dnote"></p></div>
+<button class="btn wide" id="order" disabled>Place order</button></div></div>
+<div class="done" id="done" hidden><div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h2>Order saved</h2><p>Your order reference is <strong id="doneRef"></strong>.</p><p id="doneMsg"></p><button class="btn wide" id="donePay" hidden>Pay now with Paystack</button>
+<a class="btn wa wide" id="doneWa" target="_blank" rel="noopener">Confirm on WhatsApp</a><button class="btn ghost wide" id="doneClose">Keep shopping</button></div>
 </aside>
+<div class="modal" id="dm" role="dialog" aria-modal="true" aria-labelledby="dmt" hidden><div class="mbox"><h2 id="dmt"></h2><p id="dmp"></p><p class="note" id="dmn"></p><div class="two"><button class="btn" id="dmgo">Proceed</button><button class="btn ghost" id="dmno">Cancel</button></div></div></div>
 <script src="/store.js"></script>
 </body></html>
