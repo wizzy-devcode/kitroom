@@ -22,7 +22,11 @@ const cfgOf = l => cfgP(P(l.id));
 const fieldList = c => c.rule === 'any' ? c.fields.join(' or ') : c.fields.join(', ').replace(/, ([^,]*)$/, ' and $1');
 const fee = x => x.custom_fee != null ? +x.custom_fee : (+D.site.cfee || 0);
 const unit = l => P(l.id).price + (l.cz ? fee(P(l.id)) : 0);
-const toast = m => { const t = $('tg'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 2600); };
+const toast = (m, cartBtn) => {
+  const t = $('tg'); t.textContent = m; t.classList.toggle('act', !!cartBtn);
+  if (cartBtn) { const b = document.createElement('button'); b.type = 'button'; b.className = 'tgb'; b.textContent = 'View cart'; b.onclick = () => { t.classList.remove('show'); drawer(true); }; t.appendChild(b); }
+  t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), cartBtn ? 5000 : 2600);
+};
 const jersey = (a, b) => `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M33 8 12 20 4 42l16 6 6-10v54h48V38l6 10 16-6-8-22L67 8c-3 7-9 11-17 11S36 15 33 8z" fill="${E(a)}" stroke="rgba(0,0,0,.35)" stroke-width="2" stroke-linejoin="round"/><path d="M33 8c3 7 9 11 17 11s14-4 17-11" fill="none" stroke="${E(b)}" stroke-width="4"/></svg>`;
 const G = d => `<svg class="gl" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${d}</svg>`;
 const GL = {
@@ -253,7 +257,7 @@ $('grid').onclick = e => {
   const b = e.target.closest('[data-add]'); if (!b) return;
   const id = +b.dataset.add, x = P(id), z = $('z' + id), zz = z ? z.value : 'One size', cz = $('cz' + id).checked;
   if (inCart(id) >= x.stock) return toast('That’s all we have in stock');
-  const l = cart.find(c => c.id === id && c.z === zz && c.cz === cz); l ? l.q++ : cart.push({ id, z: zz, cz, q: 1 }); cartUI(); toast(cz ? 'Added. We’ll confirm the print with you' : 'Added to cart'); const bg = $('openCart'); bg.classList.remove('bump'); void bg.offsetWidth; bg.classList.add('bump');
+  const l = cart.find(c => c.id === id && c.z === zz && c.cz === cz); l ? l.q++ : cart.push({ id, z: zz, cz, q: 1 }); cartUI(); toast(cz ? 'Added. We’ll confirm the print with you' : 'Added to cart', true); const bg = $('openCart'); bg.classList.remove('bump'); void bg.offsetWidth; bg.classList.add('bump');
 };
 $('grid').onchange = e => {
   if (e.target.id && e.target.id.startsWith('cz')) { const id = +e.target.id.slice(2), x = P(id); if (x && $('pr' + id)) $('pr' + id).textContent = e.target.checked && fee(x) ? money(x.price + fee(x)) : money(x.price); }

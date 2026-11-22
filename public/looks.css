@@ -255,3 +255,8 @@ html[data-look=terrace] .sp-count{background:var(--card);border:2px solid var(--
 html[data-look=terrace] .sp-count b{color:var(--ink)}
 html[data-look=terrace] .sp-bar{height:6px;background:var(--soft);border-top:2px solid var(--ink)}
 html[data-look=terrace] .sp-bar i{background:var(--grn)}
+
+/* View cart button in the added-to-cart message */
+html[data-look=gallery] .tg.act{border-radius:999px;padding-left:22px}
+html[data-look=gallery] .tgb{clip-path:none;border-radius:999px;background:var(--paper);color:var(--ink)}
+html[data-look=terrace] .tgb{clip-path:none;background:var(--yc);color:#000;border:2px solid var(--paper);text-transform:uppercase;letter-spacing:.04em}
